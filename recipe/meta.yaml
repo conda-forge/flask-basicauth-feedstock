@@ -1,7 +1,6 @@
 {% set name = "Flask-BasicAuth" %}
 {% set version = "0.2.0" %}
 {% set compress_type = "tar.gz" %}
-{% set hash_type = "sha256" %}
 {% set hash_val = "df5ebd489dc0914c224419da059d991eb72988a01cdd4b956d52932ce7d501ff" %}
 
 package:
@@ -10,25 +9,27 @@ package:
 
 source:
   fn: {{ name }}-{{ version }}.{{ compress_type }}
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.{{ compress_type }}
-  {{ hash_type }}: {{ hash_val }}
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.{{ compress_type }}
+  sha256: {{ hash_val }}
 
 build:
   noarch: python
-  number: 3
+  number: 4
   script: "{{ PYTHON }} -m pip install . -vv"
 
 requirements:
   host:
     - pip
-    - python
+    - python {{ python_min }}
     - setuptools
   
   run:
-    - python
+    - python >={{ python_min }}
     - flask
 
 test:
+  requires:
+    - python {{ python_min }}
   imports:
     - flask_basicauth
 
